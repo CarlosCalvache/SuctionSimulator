@@ -370,7 +370,7 @@ https://github.com/username/suction-simulator
   title = {Suction Simulator SN/SNN: Simulador Didáctico de Succión Neonatal},
   year = {2025},
   version = {1.0},
-  publisher = {Universidad Iberoamericana},
+  publisher = {Corporación Universitaria Iberoamericana},
   url = {https://github.com/username/suction-simulator}
 }
 ```
