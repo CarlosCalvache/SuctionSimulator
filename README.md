@@ -410,14 +410,6 @@ Corporación Universitaria Iberoamericana (IBERO)
 
 ---
 
-## Agradecimientos
-
-- **Estudiantes de Fonoaudiología IBERO:** Feedback en iteraciones tempranas
-- **Comunidad científica:** Por compartir datos abiertos de succión neonatal
-- **Replit:** Plataforma de desarrollo y hosting
-
----
-
 **Última Actualización:** Octubre 31, 2025  
 **Versión:** 1.0  
 **Estado:** Producción — Uso Educativo
