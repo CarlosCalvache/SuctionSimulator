@@ -4,7 +4,7 @@
 Succión Nutritiva (SN) y Succión No Nutritiva (SNN)
 
 Instrucciones:
-1. Descarga: Download_SuctionSimulator.zip
+1. Descarga: SuctionSimulatorAPP.zip
 2. Descomprime la carpeta .zip
 3. Abre SuctionSimulatorAPP.html
 
