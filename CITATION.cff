@@ -1,0 +1,55 @@
+cff-version: 1.2.0
+message: "Si usas este simulador en tu investigación o docencia, por favor cítalo como se indica a continuación."
+type: software
+title: "Suction Simulator: Simulador Didáctico de Succión Neonatal"
+version: 1.0.0
+date-released: 2025-10-31
+authors:
+  - family-names: "Calvache"
+    given-names: "Carlos"
+    orcid: "https://orcid.org/0000-0002-5403-1852"
+    affiliation: "Corporación Universitaria Iberoamericana, Programa de Fonoaudiología"
+    email: "carlos.calvache@docente.ibero.edu.co"
+repository-code: "https://github.com/username/suction-simulator"
+url: "https://username.github.io/suction-simulator/"
+abstract: >
+  Simulador educativo interactivo de patrones de succión neonatal 
+  (nutritiva y no nutritiva) para enseñanza de coordinación 
+  succión-deglución-respiración (SDR) y evaluación NOMAS en 
+  programas de fonoaudiología y ciencias de la salud.
+keywords:
+  - neonatal feeding
+  - suction patterns
+  - nutritive sucking
+  - non-nutritive sucking
+  - NOMAS
+  - speech-language pathology
+  - educational simulation
+  - canvas visualization
+license: MIT
+license-url: "https://github.com/username/suction-simulator/blob/main/LICENSE"
+references:
+  - type: article
+    authors:
+      - family-names: "Geddes"
+        given-names: "Donna T."
+    title: "Tongue movement and intra-oral vacuum in breastfeeding infants"
+    journal: "Early Human Development"
+    year: 2008
+    doi: "10.1016/j.earlhumdev.2007.12.008"
+  - type: article
+    authors:
+      - family-names: "Sakalidis"
+        given-names: "Vanessa S."
+    title: "Oxygen saturation and suck-swallow-breathe coordination of term infants during breastfeeding and feeding from a teat releasing milk only with vacuum"
+    journal: "International Journal of Pediatrics"
+    year: 2012
+    doi: "10.1155/2012/130769"
+  - type: article
+    authors:
+      - family-names: "Lagarde"
+        given-names: "Manon L. J."
+    title: "How infants suckle: development and individual variation in suck-swallow-breathe patterns during breastfeeding"
+    journal: "BMC Pediatrics"
+    year: 2019
+    doi: "10.1186/s12887-019-1445-3"

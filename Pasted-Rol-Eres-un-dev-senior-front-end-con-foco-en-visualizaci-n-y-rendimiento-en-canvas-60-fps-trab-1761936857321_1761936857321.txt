@@ -1,0 +1,199 @@
+Rol: Eres un dev senior front-end con foco en visualización y rendimiento en <canvas> (60 fps), trabajando sobre un simulador didáctico de succión neonatal SN/SNN.
+
+Contexto del producto (transferencia de investigación):
+
+App web estática (HTML único) con dos paneles sincronizados:
+
+Panel superior: succión (vacío intraoral) va de 0 a negativo (kPa/mmHg).
+
+Panel inferior: deglución (líneas punteadas), apnea (banda gris con símbolo ⊘ ±0.25 s alrededor de cada D) y respiración solo en las pausas de succión (inspiración positiva, mL/s).
+
+Controles (no romper su API ni nombres): Pmax, Frecuencia, Duración de racimo, Pausa, selector SDR (1:1:1, 2:1:1, 3:1:1 en SN; y probabilístico baja/media/alta en SNN), Play/Pause, y presets (SN, SNN, Desorganizado).
+
+NOMAS educativo: checkboxes relevantes y bandas por edad (32–34, 34–36, ≥37 sem) con métricas (frecuencia medida, succ/racimo, pausa media, IC).
+
+Convenciones visuales: colores/símbolos solo en el panel inferior; el panel superior se mantiene limpio.
+
+Evidencia: botón “📎 Evidencia” que abre un drawer con referencias (PubMed/PMC/JoVE) y tooltips “ⓘ” en sliders (no deben interferir con la animación).
+
+Ventana de tiempo fija: 20 s en ambos paneles.
+
+Forma de onda: succión valle senoidal suavizada (no diente de sierra).
+
+Unidades: succión en kPa/mmHg (negativo) y respiración en mL/s (positivo).
+
+Rendimiento objetivo: animación fluida (≈60 fps), sliders responsivos, sin bloqueos en métricas.
+
+Código base (pégalo tal cual, SIN editar antes):
+
+<<<PEGA_AQUI_TU_HTML_COMPLETO>>>
+
+Objetivos (no romper nada)
+
+Mantener el comportamiento y la UX actual 100%.
+
+Optimizar rendimiento (60 fps), especialmente el render <canvas> y el cálculo de métricas.
+
+Modularizar internamente (sin cambiar la API de controles) para facilitar futuras features.
+
+Preparar publicación: estructura de archivos, README técnico, LICENCIA, y replit config mínima para hosting estático.
+
+Criterios de éxito
+
+La animación corre ~60 fps en equipos modestos.
+
+Sliders responden al instante (sin “jank”).
+
+Métricas (frecuencia/min, succ/racimo, pausa media, IC) estables y coherentes.
+
+Apneas (⊘) sincronizadas con D; respiración aparece solo en pausas y se suprime alrededor de D.
+
+SN (determinista) y SNN (probabilístico) siguen funcionando.
+
+Drawer de Evidencia y tooltips no bloquean el hilo de animación.
+
+Restricciones
+
+No cambiar IDs de elementos ni nombres de funciones públicas usadas por la UI (para no romper la API de controles).
+
+Mantener estilos y convenciones visuales actuales.
+
+Todo en JS/HTML/CSS nativo; cero dependencias externas salvo que justifiques ganancia clara.
+
+Cualquier refactor debe ser backward-compatible con el HTML actual.
+
+Plan de trabajo (pide PRs/commits incrementales)
+Paso 1 — Auditoría rápida + perfiles de rendimiento
+
+Instrumentar performance.now(), console.time() y contadores de FPS.
+
+Detectar cuellos de botella:
+
+Dibujo completo en cada frame vs. dibujo incremental.
+
+Recomputos repetidos (ejes, grillas) vs. capas estáticas.
+
+Cálculo de métricas en caliente vs. throttling (10 Hz ya está: confirmar).
+
+Entregable: un informe corto en docs/perf-notes.md con números y prioridad de mejoras.
+
+Paso 2 — Micro-optimizaciones seguras (sin romper UX)
+
+Offscreen buffers: renderizar grillas y ejes en canvases cacheados (ya se hace; verifica que nunca se rehagan por frame, solo en resize o cambio de unidad).
+
+Pre-memoización:
+
+xPixTop/xPixBot precalculados para N puntos (ya está).
+
+mapYTop con LUT simple si el rango no cambia (kPa ↔ mmHg).
+
+Dibujo incremental: limpiar solo la franja que avanza (si factible con el buffer circular), o mantener el scroll vía índice sin redibujar toda la polilínea.
+
+GC-friendly: evitar crear arrays intermedios por frame; reusar Float32Array para snapshots.
+
+Throttling del análisis: confirmar 10 Hz y que el snapshot sea por referencia y copiado una vez.
+
+Paso 3 — Salud del bucle de animación
+
+Asegurar que requestAnimationFrame(step) nunca quede bloqueado por operaciones síncronas largas (e.g., al abrir el drawer, tooltips).
+
+Comprobar que los listeners solo actualicen estado y no disparen cálculos pesados.
+
+Paso 4 — Mantenimiento de evidencia / tooltips
+
+Validar que el drawer de Evidencia y los tooltips “ⓘ” no ejecuten nada en cada frame.
+
+Lazy-render del contenido del drawer (ya está). Mantener así.
+
+Paso 5 — Estructura de proyecto para publicación
+
+Proponer split en carpetas sin cambiar rutas existentes (o crear alias):
+
+/index.html
+/assets/logo_Ibero.png   (fallback SVG inline ya incluido)
+/assets/icon-ibero.svg
+/docs/README.md          (uso didáctico + parámetros)
+/docs/perf-notes.md      (mediciones 60 fps, técnicas)
+/LICENSE                 (sug.: CC BY-NC-SA 4.0 o MIT según política)
+/CITATION.cff            (cita académica)
+/replit.yaml             (servidor estático)
+
+
+Crear README.md con: objetivo, controles, SDR (SN vs SNN), NOMAS, unidades, citación de evidencia.
+
+Paso 6 — Configuración Replit (hosting estático)
+
+Añadir replit.yaml mínimo:
+
+run: ["sh", "-c", "python3 -m http.server 8000"]
+
+
+y configurar el “Webview” a http://localhost:8000.
+
+(Opcional) .replit con "run" equivalente.
+
+Paso 7 — Tests manuales (no regresión)
+
+Play/Pause: sin pérdida de frames ni drift del tiempo.
+
+Cambio de unidades: redibuja grilla superior sin recalcular todo.
+
+Resize: recalcula grillas y mapeos una sola vez con debounce.
+
+Presets: SN (60/2.2/12/3), SNN (110/1.0/8/3), Desorganizado (35/0.9/5/6) mantienen comportamiento esperable.
+
+SDR: SN determinista (1:1:1 / 2:1:1 / 3:1:1) y SNN probabilístico (baja/ media/ alta) siguen sincronizando D y apnea (⊘ ±0.25 s).
+
+Tareas solicitadas a Replit (entregables concretos)
+
+Perf patch 1:
+
+Confirmar que ejes/grillas se renderizan solo en rebuildStatic().
+
+Revisar si drawSuctionLine() puede usar línea parcial con moveTo desde el último índice y borrar solo la región previa (si la complejidad no compensa, dejar full draw pero justificar).
+
+Perf patch 2:
+
+Evitar al máximo new Float32Array(L) en cada análisis: reutiliza un buffer global snap y cópialo con set cuando toque.
+
+Docs para publicación:
+
+Crear docs/README.md con secciones: Contexto didáctico, Controles y rangos, NOMAS y bandas por edad, Convenciones visuales, Citas científicas (copiar las del drawer).
+
+Crear CITATION.cff con título (Suction Simulator SN/SNN), autores y enlace al repo (placeholder).
+
+Proponer licencia (MIT si buscas máxima adopción; o CC BY-NC-SA si quieres restringir uso comercial).
+
+replit.yaml + vercel-ready (opcional):
+
+Dejar replit.yaml listo.
+
+Añadir instrucciones en docs/README.md para desplegar también en GitHub Pages o Vercel (estático).
+
+Checklist de verificación (añadir a docs/perf-notes.md):
+
+FPS ~60 (medido con devtools).
+
+Latencia de sliders < 16 ms por interacción.
+
+Análisis 10 Hz estable (sin GC spikes > 30 ms).
+
+Sin fugas de listeners ni timers.
+
+Importante (no hacer)
+
+No cambiar IDs, clases o nombres de funciones llamados por la UI.
+
+No alterar los colores/símbolos del panel inferior.
+
+No cambiar los presets ni su semántica.
+
+No introducir librerías pesadas.
+
+Al final, entrega:
+
+El mismo index.html funcional (o ruta raíz) con mejoras internas.
+
+/docs/README.md, /docs/perf-notes.md, /CITATION.cff, /LICENSE, /replit.yaml.
+
+Notas de qué optimizaciones se aplicaron y por qué.
